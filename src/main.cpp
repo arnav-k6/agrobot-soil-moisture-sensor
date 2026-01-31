@@ -77,6 +77,11 @@ void loop() {
 
   double vwc = convertReading(voltage);
   Serial.print("Soil Moisture (VWC %): ");
-  Serial.println(vwc);
+  if (vwc > 0){
+    Serial.println(vwc);
+  }
+  else{
+    Serial.println("Reading Not Available/Invalid");
+  }
 }
 

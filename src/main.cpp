@@ -42,6 +42,28 @@ void usePercentageMethod(double rawValue){
   delay(2000); // Wait for 2 seconds before the next reading
 }
 
+double convertReading(double voltagein){
+  double vwc;
+  if(voltagein >= 0.0 && voltagein <= 1.1 ){
+    vwc = 10*voltagein-1.6;
+  }
+  else if (voltagein > 1.1 && voltagein <=1.3){
+    vwc = 25*voltagein-17.5;
+  }
+  else if (voltagein >1.3 && voltagein <= 1.82 ){
+    vwc = 48.08*voltagein-47.5;
+  }
+  else if (voltagein >1.82 && voltagein <= 2.2 ){
+    vwc = 26.32*voltagein-7.89;
+  }
+  else if (voltagein >2.2 && voltagein <= 3.0 ){
+    vwc = 62.5*voltagein-87.5;
+  }
+  else if(voltagein > 3.0 && voltagein <=3.5){
+    vwc = -25*voltagein+162.5;
+  }
+  return vwc;
+}
 
 void setup() {
   Serial.begin(115200); //bits pers second since each baud = 1 bit
@@ -50,9 +72,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  int soilMoistureValue = analogRead(SOIL_PIN); // Read the soil moisture sensor value
+  int rawADC = analogRead(SOIL_PIN); // Read the soil moisture sensor value 0-4095
+  double voltage = (rawADC / 4095.0) * 3.3; // Convert ADC value to voltage (ESP32 ADC is 12-bit, range 0-4095, Vref=3.3V)
 
-  usePercentageMethod(soilMoistureValue);
-  // Alternatively, you can use the Topp equation method:
+  double vwc = convertReading(voltage);
+  Serial.print("Soil Moisture (VWC %): ");
+  Serial.println(vwc);
 }
 

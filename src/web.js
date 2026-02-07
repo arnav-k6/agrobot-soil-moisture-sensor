@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getDatabase, ref, onValue} from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 //This imports Firebase tools - like importing libraries in C++
@@ -22,3 +23,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const database = getDatabase(app);
+const soilMoistureRef = ref(database, 'soilMoisture');
+const rawADCRef = ref(database, 'rawADC');
+//creates pointer to /soilMoisture and /rawADC in the database
+//This initializes the connection to Firebase and allows you to use its tools
+
+// Listen for soil moisture changes
+onValue(soilMoistureRef, (snapshot) => {
+  const vwc = snapshot.val();
+  console.log("Soil Moisture (VWC %):", vwc);
+});
+
+// Listen for raw ADC changes
+onValue(rawADCRef, (snapshot) => {
+  const adc = snapshot.val();
+  console.log("Raw ADC:", adc);
+});

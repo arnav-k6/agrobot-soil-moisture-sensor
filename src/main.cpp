@@ -1,15 +1,22 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <WiFiClientSecure.h>
-#include <HTTPClient.h>
-#include <WiFiUdp.h>
 
+//#include <WiFiClientSecure.h>
+//#include <HTTPClient.h>
+//#include <WiFiUdp.h>
 
+#include <Firebase_ESP_Client.h> //Main firebase library
+#include "addons/TokenHelper.h" //handles login and token generation
+#include "addons/RTDBHelper.h" //specifically for firebase operations
 
-#define WIFI_SSID 
-#define WIFI_PASSWORD 
-#define API_KEY "PlaceHolder, API key in instagram"
-#define DATABASE_URL "https://esp-32-test-c2a8f-default-rtdb.firebaseio.com"
+FirebaseData fbdo; 
+FirebaseAuth auth;
+FirebaseConfig config; //configures the firebase
+
+//EDIT THESE VALUES TO YOUR OWN//
+#define WIFI_SSID "Aaryan" //hotspot name
+#define WIFI_PASSWORD "monkemonke" //hotspot passsword
+#define FIREBASE_URL "https://esp-32-test-c2a8f-default-rtdb.firebaseio.com"
 
 //https://esp-32-test-c2a8f-default-rtdb.firebaseio.com/
 //firebase 
@@ -25,6 +32,8 @@ const double drySoilThreshold = 1000.0;
 const double wetSoilThreshold = 3000.0;
 //-- Use In-Situ Calibration Values --//
 
+//Used in Loop//
+unsigned long sendDataPrevMillis = 0; 
 //--- Function Prototypes ---//
 
 
@@ -74,23 +83,73 @@ double convertReading(double voltagein){
   return vwc;
 }
 
+void wifiInit(){
+  Serial.print("Connecting to WIfi: ");
+  Serial.println(WIFI_SSID);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD); //start wifi mode in ESP32
+
+  //Wait Til wifi connects
+  while(WiFi.status() != WL_CONNECTED){
+    delay(500);
+    Serial.print(".");
+  }
+  //WiFi Connected!
+  Serial.println("\nWiFi Connected!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void initializeFirebase(){
+  Serial.println("Initializing Firebase...");
+
+  //tell firebase where our database is 
+  config.database_url = FIREBASE_URL;
+
+  //sign in anonymously
+  config.signer.tokens.legacy_token = "";
+
+  Firebase.begin(&config, &auth);
+  Serial.println("Firebase Initialized!");
+
+}
+
+
 void setup() {
   Serial.begin(115200); //bits pers second since each baud = 1 bit
   pinMode(SOIL_PIN, INPUT); // Set soil moisture sensor pin as input
+
+  //1. Connect to WiFi
+  //2. Connect to Firebase
+
+  //Connect to wifi first
+  wifiInit();
+  //connect to firebase
+  initializeFirebase();
 }
+
 
 void loop() {
   // put your main code here, to run repeatedly:
   int rawADC = analogRead(SOIL_PIN); // Read the soil moisture sensor value 0-4095
   double voltage = (rawADC / 4095.0) * 3.3; // Convert ADC value to voltage (ESP32 ADC is 12-bit, range 0-4095, Vref=3.3V)
-
   double vwc = convertReading(voltage);
   if(vwc < 0){
     vwc = 0;
   }
   Serial.print("Soil Moisture (VWC %): ");
-    Serial.println(vwc);
-    delay(2000);
+  Serial.println(vwc);//prints locally
+  delay(2000);
+
+  if(Firebase.ready() && (millis() - sendDataPrevMillis >= 5000 || sendDataPrevMillis == 0)){
+    
+    sendDataPrevMillis = millis();
+
+    Firebase.RTDB.setFloat(&fbdo, "/soilMoisture", vwc);
+    
+    Firebase.RTDB.setFloat(&fbdo, "/rawADC", rawADC);
+
+    delay(2000); // Wait for 2 seconds before the next reading
+  }
 
 }
 

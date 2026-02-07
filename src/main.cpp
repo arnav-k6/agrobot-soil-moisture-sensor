@@ -6,6 +6,15 @@
 
 
 
+#define WIFI_SSID 
+#define WIFI_PASSWORD 
+#define API_KEY "PlaceHolder, API key in instagram"
+#define DATABASE_URL "https://esp-32-test-c2a8f-default-rtdb.firebaseio.com"
+
+//https://esp-32-test-c2a8f-default-rtdb.firebaseio.com/
+//firebase 
+//npm install -g firebase-tools command line for instal CLI
+
 //--- Pin Definitions ---//
 const int SOIL_PIN = 34; 
 //-- Soil Moisture Sensor connected to GPIO 34 - pin 10--//

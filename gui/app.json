@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "app name",
+    "slug": "agrobot-gui",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#1a3c34"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.agrobot.gui"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1a3c34"
+      },
+      "package": "com.agrobot.gui"
+    },
+    "plugins": []
+  }
+}

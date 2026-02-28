@@ -17,7 +17,7 @@ FirebaseConfig config; //configures the firebase
 #define WIFI_SSID "Aaryan" //hotspot name
 #define WIFI_PASSWORD "monkemonke" //hotspot passsword
 #define FIREBASE_URL "https://agrobot-ab7d4-default-rtdb.firebaseio.com"
-#define API_KEY 
+#define API_KEY "AIzaSyAWyyrtlYPqRyccJCIUzaeStCAntryqQ5U"
 //https://esp-32-test-c2a8f-default-rtdb.firebaseio.com/
 //firebase 
 //npm install -g firebase-tools command line for instal CLI
@@ -105,8 +105,15 @@ void initializeFirebase(){
   //tell firebase where our database is 
   config.database_url = FIREBASE_URL;
 
+  config.token_status_callback = tokenStatusCallback;
+
+  if (Firebase.signUp(&config, &auth, "", "")) {
+    Serial.println("Sign up OK");
+  } else {
+    Serial.printf("Sign up FAILED: %s\n", config.signer.signupError.message.c_str());
+  }
   //sign in anonymously
-  Firebase.signUp(&config, &auth, "", "");
+  //Firebase.signUp(&config, &auth, "", "");
 
   Firebase.begin(&config, &auth);
   Firebase.reconnectWiFi(true);

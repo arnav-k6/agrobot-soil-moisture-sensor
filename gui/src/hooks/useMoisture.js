@@ -16,6 +16,9 @@ export function useMoisture() {
     const unsub = onValue(
       moistureRef,
       (snapshot) => {
+        //
+        console.log('soilMoisture snapshot:', snapshot.val());
+        //
         setLoading(false);
         const val = snapshot.val();
         if (val != null) {

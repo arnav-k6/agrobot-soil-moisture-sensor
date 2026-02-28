@@ -2,15 +2,14 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 
-// Your Firebase config (what Firebase gave you)
 const firebaseConfig = {
-  apiKey: "AIzaSyAWyyrtlYPqRyccJCIUzaeStCAntryqQ5U",
-  authDomain: "agrobot-ab7d4.firebaseapp.com",
-  databaseURL: "https://agrobot-ab7d4-default-rtdb.firebaseio.com",
-  projectId: "agrobot-ab7d4",
-  storageBucket: "agrobot-ab7d4.firebasestorage.app",
-  messagingSenderId: "258957735530",
-  appId: "1:258957735530:web:29af3cac4e54f4da3dfc13",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase ONCE

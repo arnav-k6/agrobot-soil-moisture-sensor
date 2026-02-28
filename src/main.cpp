@@ -8,16 +8,14 @@
 #include <Firebase_ESP_Client.h> //Main firebase library
 #include "addons/TokenHelper.h" //handles login and token generation
 #include "addons/RTDBHelper.h" //specifically for firebase operations
+#include "secrets.h"  // ← add this at the top
 
 FirebaseData fbdo; 
 FirebaseAuth auth;
 FirebaseConfig config; //configures the firebase
 
 //EDIT THESE VALUES TO YOUR OWN//
-#define WIFI_SSID "Aaryan" //hotspot name
-#define WIFI_PASSWORD "monkemonke" //hotspot passsword
-#define FIREBASE_URL "https://agrobot-ab7d4-default-rtdb.firebaseio.com"
-#define API_KEY "AIzaSyAWyyrtlYPqRyccJCIUzaeStCAntryqQ5U"
+
 //https://esp-32-test-c2a8f-default-rtdb.firebaseio.com/
 //firebase 
 //npm install -g firebase-tools command line for instal CLI

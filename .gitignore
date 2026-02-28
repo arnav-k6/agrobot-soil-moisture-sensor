@@ -18,3 +18,5 @@
 .vscode/launch.json
 .vscode/ipch
 node_modules
+src/secrets.h
+gui/.env

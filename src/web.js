@@ -1,6 +1,7 @@
+import { getDatabase, ref, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, onValue } from "firebase/database";
+
 
 // Configuration pulling from .env file
 const firebaseConfig = {

@@ -1,33 +1,27 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, onValue} from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-//This imports Firebase tools - like importing libraries in C++
+import { getDatabase, ref, onValue } from "firebase/database";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Configuration pulling from .env file
 const firebaseConfig = {
-  apiKey: "AIzaSyBjUGtNm0vE6Nba81in5B2XaQG0Ox7pR6g",
-  authDomain: "esp-32-test-c2a8f.firebaseapp.com",
-  databaseURL: "https://esp-32-test-c2a8f-default-rtdb.firebaseio.com",
-  projectId: "esp-32-test-c2a8f",
-  storageBucket: "esp-32-test-c2a8f.firebasestorage.app",
-  messagingSenderId: "438553226611",
-  appId: "1:438553226611:web:f06dc33f0bac2934f72906",
-  measurementId: "G-LBW3NVNPET"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
-//This is your project's "address book"
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
+
+// References to your data paths
 const soilMoistureRef = ref(database, 'soilMoisture');
 const rawADCRef = ref(database, 'rawADC');
-//creates pointer to /soilMoisture and /rawADC in the database
-//This initializes the connection to Firebase and allows you to use its tools
 
 // Listen for soil moisture changes
 onValue(soilMoistureRef, (snapshot) => {

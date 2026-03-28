@@ -35,9 +35,11 @@ A **precision agriculture** stack: an **ESP32** reads soil moisture, sends data 
 ### 2. ESP32 firmware
 
 1. Open this repo in **PlatformIO** (or Arduino IDE with ESP32 support).
-2. In `src/main.cpp`, set:
+2. In `secrets.h`, set:
    - `WIFI_SSID` and `WIFI_PASSWORD` — your Wi‑Fi
    - `FIREBASE_URL` — your Realtime Database URL
+   - Ensure your .env files have specific values follow .env example(There are two .env files at the moment oen for the app one for firebase)
+   - Ensure secrets.h and .env is in gitignore
 3. Soil sensor: connect signal to **GPIO 34**, power and GND as per your sensor datasheet.
 4. Build and upload to the ESP32. Open Serial Monitor (115200 baud) to see readings and confirm Firebase connection.
 
